@@ -1,0 +1,65 @@
+/* Print styles for PDF generation */
+@media print {
+  /* Hide elements that shouldn't appear in PDF */
+  .print\\:hidden {
+    display: none !important;
+  }
+  
+  /* Remove shadows and borders for cleaner PDF */
+  .print\\:shadow-none {
+    box-shadow: none !important;
+  }
+  
+  .print\\:rounded-none {
+    border-radius: 0 !important;
+  }
+  
+  /* Remove padding for full-page PDF */
+  .print\\:p-0 {
+    padding: 0 !important;
+  }
+  
+  /* Ensure proper page breaks */
+  .page-break {
+    page-break-before: always;
+  }
+  
+  /* Prevent orphaned headings */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  
+  /* Prevent breaking within sections */
+  section {
+    page-break-inside: avoid;
+  }
+  
+  /* Ensure background colors print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* Set page margins */
+  @page {
+    margin: 0.5in;
+    size: A4;
+  }
+  
+  /* Ensure text is readable */
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  /* Optimize for PDF */
+  .bg-white {
+    background-color: white !important;
+  }
+  
+  /* Remove any hover effects */
+  *:hover {
+    background-color: inherit !important;
+    color: inherit !important;
+  }
+} 

@@ -1,0 +1,52 @@
+{
+  "name": "ai-resume-generator",
+  "version": "1.0.0",
+  "description": "AI-powered resume generator with modern UI",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.4",
+    "@heroicons/react": "^2.2.0",
+    "axios": "^1.9.0",
+    "bcryptjs": "^2.4.3",
+    "cohere-ai": "^7.17.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "framer-motion": "^12.16.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.8.7",
+    "multer": "^2.0.1",
+    "openai": "^4.104.0",
+    "path": "^0.12.7",
+    "pdfkit": "^0.13.0",
+    "react-router-dom": "^6.30.1",
+    "recharts": "^2.15.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "resume",
+    "ai",
+    "generator",
+    "react",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC"
+}

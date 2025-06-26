@@ -1,0 +1,82 @@
+/* Futuristic Glassmorphism & Neon Styles for Dashboard */
+
+.dashboard-modern-bg {
+  font-family: 'Inter', 'Poppins', 'Space Grotesk', Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+  min-height: 100vh;
+}
+
+.dashboard-glass-card {
+  background: rgba(255,255,255,0.10);
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: box-shadow 0.3s, transform 0.3s, border 0.3s;
+}
+.dashboard-glass-card:hover {
+  box-shadow: 0 12px 40px 0 rgba(0,255,255,0.18), 0 2px 8px 0 rgba(255,0,234,0.10);
+  transform: translateY(-2px) scale(1.015);
+  border: 1.5px solid rgba(0,224,255,0.25);
+}
+
+.dashboard-glass-blur {
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(24px) brightness(1.2);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dashboard-glass-btn {
+  background: linear-gradient(90deg, #00e0ff 0%, #ff00ea 100%);
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 16px 0 rgba(0,224,255,0.12);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.dashboard-glass-btn:hover {
+  background: linear-gradient(90deg, #ff00ea 0%, #00e0ff 100%);
+  box-shadow: 0 4px 24px 0 rgba(255,0,234,0.18);
+}
+
+.dashboard-glass-icon {
+  background: rgba(255,255,255,0.18);
+  border-radius: 9999px;
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px 0 rgba(0,224,255,0.08);
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.neon-primary {
+  box-shadow: 0 0 8px 2px #00e0ff, 0 0 16px 4px #00e0ff33;
+}
+.neon-green {
+  box-shadow: 0 0 8px 2px #00ffae, 0 0 16px 4px #00ffae33;
+}
+.neon-blue {
+  box-shadow: 0 0 8px 2px #0099ff, 0 0 16px 4px #0099ff33;
+}
+.neon-purple {
+  box-shadow: 0 0 8px 2px #a259ff, 0 0 16px 4px #a259ff33;
+}
+
+/* For chart card */
+.dashboard-glass-card .recharts-wrapper {
+  filter: drop-shadow(0 2px 16px #00e0ff33);
+  border-radius: 1.5rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .dashboard-glass-card {
+    border-radius: 1.2rem;
+  }
+} 

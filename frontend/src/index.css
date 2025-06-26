@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-orbitron;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300 hover:shadow-lg hover:scale-105;
+  }
+
+  .btn-danger {
+    @apply bg-gradient-to-r from-red-600 to-pink-600 text-white hover:from-red-700 hover:to-pink-700 hover:shadow-lg hover:scale-105;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300;
+  }
+
+  .input:focus {
+    @apply transform scale-[1.02] shadow-md;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-xl;
+  }
+
+  .form-group {
+    @apply mb-4;
+  }
+
+  .ai-icon {
+    @apply relative;
+  }
+
+  .ai-icon::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full opacity-20 blur-xl animate-pulse;
+  }
+
+  .ai-icon::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full opacity-10 blur-2xl animate-pulse;
+  }
+}
+
+/* Custom styles for print */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Import print styles for PDF generation */
+@import './styles/print.css'; 
