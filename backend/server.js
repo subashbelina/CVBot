@@ -48,6 +48,7 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
   'http://127.0.0.1:5000',
   'https://ai-resume-generator-frontend-mp4o.vercel.app',
+  'https://ai-resume-generator-frontend-mp4o-cqc9wml75.vercel.app',
   'https://ai-resume-generator-subash.vercel.app'
 ];
 
