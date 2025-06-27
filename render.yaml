@@ -3,6 +3,7 @@ services:
     name: ai-resume-generator-backend-subash
     runtime: node
     plan: free
+    rootDir: backend
     buildCommand: npm install
     startCommand: npm start
     envVars:
