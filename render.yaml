@@ -17,5 +17,5 @@ services:
         sync: false
       - key: FRONTEND_URL
         value: https://ai-resume-generator-subash.vercel.app
-    healthCheckPath: /
+    healthCheckPath: /health
     autoDeploy: true 

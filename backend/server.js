@@ -85,14 +85,27 @@ if (!fs.existsSync(uploadsDir)) {
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
+  serverSelectionTimeoutMS: 10000,
   socketTimeoutMS: 45000,
 })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
-    process.exit(1);
+    console.log('Server will start without MongoDB connection. Retrying...');
   });
+
+// Add MongoDB connection retry logic
+mongoose.connection.on('error', (err) => {
+  console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connected');
+});
 
 // Multer storage setup
 const storage = multer.diskStorage({
@@ -200,7 +213,20 @@ app.post('/api/ai/generate', async (req, res) => {
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the Resume Generator API' });
+  res.json({ 
+    message: 'Welcome to the Resume Generator API',
+    status: 'running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
 });
 
 // 404 handler
