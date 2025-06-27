@@ -13,6 +13,8 @@ services:
         sync: false
       - key: COHERE_API_KEY
         sync: false
+      - key: JWT_SECRET
+        sync: false
       - key: FRONTEND_URL
         value: https://ai-resume-generator-subash.vercel.app
     healthCheckPath: /
