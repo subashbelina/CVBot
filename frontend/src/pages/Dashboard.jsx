@@ -34,15 +34,15 @@ import {
   Calendar,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   ResponsiveContainer,
+// } from 'recharts';
 import './dashboard-modern.css';
 import api from '../utils/axios';
 import { toast } from 'react-toastify';
@@ -312,7 +312,7 @@ function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              {/* <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                   <XAxis dataKey="name" className="text-sm" />
@@ -335,7 +335,7 @@ function Dashboard() {
                     activeDot={{ r: 7 }}
                   />
                 </LineChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> */}
             </div>
           </CardContent>
         </Card>
