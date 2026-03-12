@@ -8,12 +8,22 @@
 
 .dashboard-glass-card {
   background: rgba(255,255,255,0.10);
-  border-radius: 2rem;
+  border-radius: 1.25rem;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
   border: 1.5px solid rgba(255,255,255,0.18);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   transition: box-shadow 0.3s, transform 0.3s, border 0.3s;
+}
+@media (min-width: 640px) {
+  .dashboard-glass-card {
+    border-radius: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .dashboard-glass-card {
+    border-radius: 2rem;
+  }
 }
 .dashboard-glass-card:hover {
   box-shadow: 0 12px 40px 0 rgba(0,255,255,0.18), 0 2px 8px 0 rgba(255,0,234,0.10);
@@ -74,9 +84,96 @@
   border-radius: 1.5rem;
 }
 
-/* Responsive tweaks */
-@media (max-width: 640px) {
-  .dashboard-glass-card {
-    border-radius: 1.2rem;
+/* Dashboard page: content layout and spacing */
+.dashboard-content-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+}
+@media (min-width: 640px) {
+  .dashboard-content-layout {
+    gap: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .dashboard-content-layout {
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* Welcome block — consistent padding, no cut-off */
+.dashboard-welcome-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+@media (min-width: 640px) {
+  .dashboard-welcome-card {
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .dashboard-welcome-card {
+    border-radius: 1.5rem;
+    padding: 1.5rem 2rem;
+  }
+}
+
+/* Stats: 2x2 on mobile, then 2 cols, then 4 cols */
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Stat card — compact padding, aligned content */
+.dashboard-stat-card {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+}
+@media (min-width: 640px) {
+  .dashboard-stat-card {
+    padding: 1rem 1.25rem;
+    border-radius: 1rem;
+  }
+}
+
+/* Section blocks — consistent padding */
+.dashboard-section {
+  padding: 1rem;
+  border-radius: 1rem;
+}
+@media (min-width: 640px) {
+  .dashboard-section {
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .dashboard-section {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
   }
 } 

@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Bars3Icon,
-  XMarkIcon,
-  HomeIcon,
   DocumentTextIcon,
   SparklesIcon,
   UserIcon,
@@ -13,13 +9,13 @@ import {
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
   Squares2X2Icon,
-  EyeIcon
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
+import { useAuth } from '../contexts/AuthContext';
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({ isOpen = false, onClose }) => {
   const location = useLocation();
-  const { user } = useAuth();
+  const { logout } = useAuth();
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -54,39 +50,8 @@ const Sidebar = () => {
     }
   };
 
-  const menuItemVariants = {
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        y: { stiffness: 1000, velocity: -100 }
-      }
-    },
-    closed: {
-      opacity: 0,
-      y: 50,
-      transition: {
-        y: { stiffness: 1000 }
-      }
-    }
-  };
-
   return (
     <>
-      {/* Toggle Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-200 border border-gray-100"
-      >
-        {isOpen ? (
-          <XMarkIcon className="h-6 w-6 text-gray-600" />
-        ) : (
-          <Bars3Icon className="h-6 w-6 text-gray-600" />
-        )}
-      </motion.button>
-
       {/* Overlay */}
       <AnimatePresence>
         {isOpen && (
@@ -95,77 +60,58 @@ const Sidebar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
           />
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
+      {/* Sidebar panel */}
       <motion.div
         variants={sidebarVariants}
         initial="closed"
-        animate={isOpen ? "open" : "closed"}
-        className="fixed top-0 left-0 h-full w-72 bg-white/80 backdrop-blur-md shadow-2xl z-50 border-r border-gray-100"
+        animate={isOpen ? 'open' : 'closed'}
+        className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-xl z-40 border-r border-gray-200 dark:border-gray-800"
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full pt-0">
           {/* Logo/Brand */}
-          <div className="p-6 border-b border-gray-100">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center space-x-3"
-            >
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg">
-                <BriefcaseIcon className="h-6 w-6 text-white" />
+          <div className="px-4 py-4 border-b border-gray-200/80 dark:border-gray-800/80">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                <BriefcaseIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Resume Builder
-              </h1>
-            </motion.div>
+              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">Resume Builder</span>
+            </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex-1 p-4 space-y-1">
-            {menuItems.map((item, index) => (
-              <motion.div
+          <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
+            {menuItems.map((item) => (
+              <Link
                 key={item.path}
-                variants={menuItemVariants}
-                custom={index}
+                to={item.path}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive(item.path)
+                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/80 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+                onClick={onClose}
               >
-                <Link
-                  to={item.path}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                    isActive(item.path)
-                      ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 shadow-sm'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <div className={`p-2 rounded-lg ${
-                    isActive(item.path)
-                      ? 'bg-blue-100 text-blue-600'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}>
-                    <item.icon className="h-5 w-5" />
-                  </div>
-                  <span className="font-medium">{item.name}</span>
-                </Link>
-              </motion.div>
+                <item.icon className="h-5 w-5 flex-shrink-0" strokeWidth={1.5} />
+                {item.name}
+              </Link>
             ))}
           </nav>
 
-          {/* User Info */}
-          <div className="p-4 border-t border-gray-100">
-            <div className="flex items-center space-x-3 px-4 py-3 text-gray-600">
-              <div className="p-2 rounded-lg bg-gray-100">
-                <UserIcon className="h-5 w-5" />
-              </div>
-              <div>
-                <span className="font-medium">{user?.name || 'Anonymous User'}</span>
-                <div className="text-sm text-gray-500">Anonymous Mode</div>
-              </div>
-            </div>
+          {/* Sign out — at bottom of left menu */}
+          <div className="border-t border-gray-200/80 dark:border-gray-800/80 px-3 py-2">
+            <button
+              type="button"
+              onClick={() => { onClose(); logout(); }}
+              className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            >
+              <ArrowRightOnRectangleIcon className="h-5 w-5 flex-shrink-0" strokeWidth={1.5} />
+              Sign out
+            </button>
           </div>
         </div>
       </motion.div>

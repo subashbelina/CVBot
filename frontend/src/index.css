@@ -5,8 +5,14 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     @apply bg-gray-50 text-gray-900;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -44,7 +50,58 @@
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-xl;
+    @apply bg-white rounded-lg shadow-md p-4 sm:p-6 transition-all duration-300 hover:shadow-xl;
+  }
+
+  /* Responsive layout — main content area (mobile-first) */
+  .layout-main {
+    flex: 1 1 0%;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 3.5rem 1rem 1.5rem; /* extra top padding to clear fixed nav */
+  }
+  @media (min-width: 640px) {
+    .layout-main {
+      padding: 4rem 1.5rem 1.75rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .layout-main {
+      padding: 4.25rem 2rem 2rem;
+    }
+  }
+
+  /* Responsive content block / card block padding — use for sections */
+  .content-block {
+    @apply rounded-xl;
+    padding: 1rem;
+  }
+  @media (min-width: 640px) {
+    .content-block {
+      padding: 1.25rem 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .content-block {
+      padding: 1.5rem;
+    }
+  }
+
+  /* Responsive spacing between sections */
+  .content-gap {
+    @apply space-y-4;
+  }
+  @media (min-width: 640px) {
+    .content-gap {
+      @apply space-y-6;
+    }
+  }
+  @media (min-width: 1024px) {
+    .content-gap {
+      @apply space-y-8;
+    }
   }
 
   .form-group {

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import NotificationDropdown from '../components/NotificationDropdown';
-import { ThemeToggle } from '../components/ui/theme-toggle';
 import {
   Card,
   CardContent,
@@ -17,22 +15,7 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 import { Button } from "../components/ui/button";
-import {
-  FileText,
-  Download,
-  Copy,
-  Eye,
-  Plus,
-  Upload,
-  BarChart3,
-  Users,
-  Eye as EyeIcon,
-  Clock,
-  ArrowUpRight,
-  Star,
-  TrendingUp,
-  Calendar,
-} from "lucide-react";
+import { FileText, Download, Copy, Eye, Plus, Upload, BarChart3, Users, Eye as EyeIcon, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 // import {
 //   LineChart,
@@ -46,16 +29,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import './dashboard-modern.css';
 import api from '../utils/axios';
 import { toast } from 'react-toastify';
-import {
-  DocumentTextIcon,
-  PlusCircleIcon,
-  PencilSquareIcon,
-  TrashIcon,
-  ChartBarIcon,
-  ClockIcon,
-  SparklesIcon,
-  ArrowTrendingUpIcon,
-} from '@heroicons/react/24/outline';
+import { DocumentTextIcon, PlusCircleIcon, PencilSquareIcon, TrashIcon, ChartBarIcon, ClockIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import WelcomeSection from '../components/dashboard/WelcomeSection';
+import StatsSection from '../components/dashboard/StatsSection';
+import QuickActionsSection from '../components/dashboard/QuickActionsSection';
 
 function Dashboard() {
   const { user } = useAuth();
@@ -169,88 +146,13 @@ function Dashboard() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="space-y-8 p-4 md:p-6 dashboard-modern-bg"
+      className="dashboard-modern-bg dashboard-content-layout"
     >
-      {/* Welcome Section with Glassmorphism */}
-      <motion.div
-        variants={itemVariants}
-        className="dashboard-glass-card relative overflow-hidden rounded-3xl p-6 md:p-8 text-white shadow-2xl border border-white/20"
-      >
-        <div className="absolute inset-0 dashboard-glass-blur" />
-        <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-lg">Welcome back!</h1>
-            <p className="mt-2 text-primary-100/80 font-medium">Manage your resumes and track your progress</p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <ThemeToggle />
-            <NotificationDropdown />
-            <Button asChild variant="secondary" className="dashboard-glass-btn">
-              <Link to="/create">
-                <Plus className="mr-2 h-4 w-4" />
-                Create New Resume
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </motion.div>
+      <WelcomeSection variants={itemVariants} />
 
-      {/* Statistics Cards */}
-      <motion.div
-        variants={itemVariants}
-        className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="bg-white rounded-xl p-4 shadow-sm border border-gray-100"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">{stat.title}</p>
-                <p className="text-2xl font-semibold mt-1">{stat.value}</p>
-              </div>
-              <div className={`p-3 rounded-lg bg-${stat.color}-50`}>
-                <stat.icon className={`h-6 w-6 text-${stat.color}-500`} />
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+      <StatsSection variants={itemVariants} stats={stats} />
 
-      {/* Quick Actions */}
-      <motion.div
-        variants={itemVariants}
-        className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
-      >
-        <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link
-            to="/create"
-            className="flex items-center space-x-3 p-4 rounded-lg border border-gray-100 hover:border-blue-500 hover:bg-blue-50 transition-colors"
-          >
-            <PlusCircleIcon className="h-6 w-6 text-blue-500" />
-            <span>Create New Resume</span>
-          </Link>
-          <Link
-            to="/ai-assistant"
-            className="flex items-center space-x-3 p-4 rounded-lg border border-gray-100 hover:border-purple-500 hover:bg-purple-50 transition-colors"
-          >
-            <SparklesIcon className="h-6 w-6 text-purple-500" />
-            <span>Get AI Suggestions</span>
-          </Link>
-          <Link
-            to="/templates"
-            className="flex items-center space-x-3 p-4 rounded-lg border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-colors"
-          >
-            <DocumentTextIcon className="h-6 w-6 text-green-500" />
-            <span>Browse Templates</span>
-          </Link>
-        </div>
-      </motion.div>
+      <QuickActionsSection variants={itemVariants} />
 
       {/* User's Resumes List */}
       <motion.div variants={itemVariants}>
@@ -343,7 +245,7 @@ function Dashboard() {
 
       {/* Recent Resumes with Enhanced Cards */}
       <motion.div variants={itemVariants}>
-        <Card className="shadow-lg">
+        <Card className="dashboard-section bg-white/95 dark:bg-gray-900/80 shadow-md border border-white/10">
           <CardHeader>
             <CardTitle>Recent Resumes</CardTitle>
             <CardDescription>
@@ -367,16 +269,18 @@ function Dashboard() {
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Card className="group hover:shadow-md transition-all duration-300">
-                        <CardContent className="p-4 md:p-6">
+                      <Card className="group bg-white/95 dark:bg-gray-900/80 border border-gray-100/80 dark:border-gray-700/80 hover:shadow-md transition-all duration-300">
+                        <CardContent className="p-4 sm:p-5 md:p-6">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div className="flex items-center space-x-4">
                               <div className="rounded-xl bg-primary-100 p-3 group-hover:bg-primary-200 transition-colors">
                                 <FileText className="h-6 w-6 text-primary-600" />
                               </div>
                               <div>
-                                <h4 className="text-sm font-medium">Software Engineer Resume</h4>
-                                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  Software Engineer Resume
+                                </h4>
+                                <div className="flex flex-wrap items-center gap-x-2 text-xs sm:text-sm text-muted-foreground">
                                   <Clock className="h-3 w-3" />
                                   <span>Last updated 2 days ago</span>
                                   <span className="mx-2">•</span>
@@ -384,7 +288,7 @@ function Dashboard() {
                                 </div>
                               </div>
                             </div>
-                            <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-2 sm:space-x-3">
                               <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
                                 Active
                               </span>
@@ -413,9 +317,9 @@ function Dashboard() {
       {/* Quick Actions with Enhanced Cards */}
       <motion.div
         variants={itemVariants}
-        className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-3 md:gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
       >
-        <Card className="group hover:shadow-lg transition-all duration-300">
+        <Card className="group hover:shadow-lg transition-all duration-300 bg-white/95 dark:bg-gray-900/80 border border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center">
               <div className="rounded-full bg-primary-100 p-2 mr-3 group-hover:bg-primary-200 transition-colors">
@@ -434,7 +338,7 @@ function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="group hover:shadow-lg transition-all duration-300">
+        <Card className="group hover:shadow-lg transition-all duration-300 bg-white/95 dark:bg-gray-900/80 border border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center">
               <div className="rounded-full bg-green-100 p-2 mr-3 group-hover:bg-green-200 transition-colors">
@@ -453,7 +357,7 @@ function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="group hover:shadow-lg transition-all duration-300">
+        <Card className="group hover:shadow-lg transition-all duration-300 bg-white/95 dark:bg-gray-900/80 border border-white/10">
           <CardHeader>
             <CardTitle className="flex items-center">
               <div className="rounded-full bg-blue-100 p-2 mr-3 group-hover:bg-blue-200 transition-colors">
@@ -475,7 +379,7 @@ function Dashboard() {
 
       {/* Popular Templates with Enhanced Cards */}
       <motion.div variants={itemVariants}>
-        <Card className="shadow-lg">
+        <Card className="dashboard-section bg-white/95 dark:bg-gray-900/80 shadow-md border border-white/10">
           <CardHeader>
             <CardTitle>Popular Templates</CardTitle>
             <CardDescription>
