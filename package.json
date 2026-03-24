@@ -1,7 +1,7 @@
 {
-  "name": "ai-resume-generator",
+  "name": "cvbot",
   "version": "1.0.0",
-  "description": "AI-powered resume generator with modern UI",
+  "description": "CVBot - AI-powered resume builder with modern UI",
   "private": true,
   "workspaces": [
     "frontend",

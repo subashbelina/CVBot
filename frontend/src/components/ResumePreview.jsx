@@ -2,6 +2,10 @@ import React, { useState, useRef } from 'react';
 import { PrinterIcon, ArrowDownTrayIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import ResumeTemplateModern from './ResumeTemplateModern';
 import ResumeTemplateClassic from './ResumeTemplateClassic';
+import ResumeTemplateSidebar from './ResumeTemplateSidebar';
+import ResumeTemplateCreative from './ResumeTemplateCreative';
+import ResumeTemplateMinimalist from './ResumeTemplateMinimalist';
+import ResumeTemplateExecutive from './ResumeTemplateExecutive';
 import html2pdf from 'html2pdf.js';
 
 const ResumePreview = ({ data, onClose }) => {
@@ -34,6 +38,24 @@ const ResumePreview = ({ data, onClose }) => {
       await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error('Error generating PDF:', error);
+    }
+  };
+
+  const renderTemplate = () => {
+    switch (data.template) {
+      case 'classic':
+        return <ResumeTemplateClassic resume={data} />;
+      case 'sidebar':
+        return <ResumeTemplateSidebar resume={data} />;
+      case 'creative':
+        return <ResumeTemplateCreative resume={data} />;
+      case 'minimalist':
+        return <ResumeTemplateMinimalist resume={data} />;
+      case 'executive':
+        return <ResumeTemplateExecutive resume={data} />;
+      case 'modern':
+      default:
+        return <ResumeTemplateModern resume={data} />;
     }
   };
 
@@ -94,11 +116,7 @@ const ResumePreview = ({ data, onClose }) => {
               transition: 'transform 0.2s ease-in-out'
             }}
           >
-            {data.template === 'classic' ? (
-              <ResumeTemplateClassic data={data} />
-            ) : (
-              <ResumeTemplateModern data={data} />
-            )}
+            {renderTemplate()}
           </div>
         </div>
       </div>

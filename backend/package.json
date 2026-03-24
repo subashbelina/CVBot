@@ -1,7 +1,7 @@
 {
-  "name": "ai-resume-generator-backend",
+  "name": "cvbot-backend",
   "version": "1.0.0",
-  "description": "Backend for AI Resume Generator",
+  "description": "Backend for CVBot",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,6 +12,7 @@
     "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "express-rate-limit": "^7.4.1",
     "express": "^4.21.2",
     "mongoose": "^8.15.1",
     "multer": "^2.0.1",

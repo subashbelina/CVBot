@@ -6,7 +6,7 @@ const {
   generateContent,
   improveContent,
   generateSuggestions
-} = require('../services/openai');
+} = require('../services/aiContentService');
 
 const router = express.Router();
 

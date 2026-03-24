@@ -1,4 +1,4 @@
-# AI Resume Generator
+# CVBot
 
 A full-stack application that helps users create professional resumes with AI-powered suggestions and multiple templates.
 

@@ -1,21 +1,21 @@
 services:
   - type: web
-    name: ai-resume-generator-backend-subash
+    name: cvbot-backend
     runtime: node
     plan: free
-    rootDir: ./backend
+    rootDir: backend
     buildCommand: npm install --omit=dev
     startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        sync: false
       - key: MONGODB_URI
         sync: false
       - key: HF_API_KEY
         sync: false
-      - key: JWT_SECRET
-        sync: false
-      - key: FRONTEND_URL
-        value: https://ai-resume-generator-subash.vercel.app
-    healthCheckPath: /health
-    autoDeploy: true 
