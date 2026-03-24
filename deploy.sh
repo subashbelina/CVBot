@@ -42,7 +42,7 @@ echo ""
 # Check environment variables
 echo "1. Environment Variables:"
 echo "   - Set up MongoDB Atlas database"
-echo "   - Get your OpenAI API key"
+echo "   - Get your Hugging Face API token (HF_API_KEY)"
 echo "   - Prepare your GitHub repository"
 
 echo ""

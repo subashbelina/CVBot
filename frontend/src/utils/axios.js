@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 // Create axios instance with base URL
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
-  withCredentials: true,
-  timeout: 10000, // 10 second timeout
+  withCredentials: false,
+  timeout: 120000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

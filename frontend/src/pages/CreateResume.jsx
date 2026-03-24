@@ -257,8 +257,18 @@ const CreateResume = () => {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
       >
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Create New Resume</h1>
+        <div className="flex justify-between items-center mb-6 gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center text-blue-600 hover:text-blue-700 border border-blue-200 px-3 py-1 rounded-lg"
+            >
+              <span className="mr-1">&larr;</span>
+              Back
+            </button>
+            <h1 className="text-2xl font-bold">Create New Resume</h1>
+          </div>
           <div className="flex items-center gap-2">
             <button
               type="button"

@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AIAssistant from './pages/AIAssistant';
 import Resumes from './pages/Resumes';
+import Templates from './pages/Templates';
 
 function App() {
   return (
@@ -37,13 +38,14 @@ function AppRoutes() {
     <Routes>
       {/* All routes are now public */}
       <Route path="/" element={<Home />} />
-      <Route path="/ai-assistant" element={<AIAssistant />} />
       <Route path="/resumes" element={<Resumes />} />
 
       {/* Main app routes with layout */}
       <Route element={<Layout />}>
+        <Route path="/ai-assistant" element={<AIAssistant />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create" element={<CreateResume />} />
+        <Route path="/templates" element={<Templates />} />
         <Route path="/edit/:id" element={<EditResume />} />
         <Route path="/view/:id" element={<ViewResume />} />
         <Route path="/profile" element={<Profile />} />

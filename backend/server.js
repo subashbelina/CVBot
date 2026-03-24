@@ -5,7 +5,6 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const OpenAI = require('openai');
 const apiRoutes = require('./routes/api');
 const aiRoutes = require('./routes/ai');
 
@@ -13,24 +12,12 @@ const app = express();
 
 // Environment variables
 const PORT = process.env.PORT || 5000;
-const COHERE_API_KEY = process.env.COHERE_API_KEY;
+const HF_API_KEY = process.env.HF_API_KEY;
 const MONGODB_URI = process.env.MONGODB_URI;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-console.log('COHERE_API_KEY:', COHERE_API_KEY); // Debug log
-console.log('MONGODB_URI:', MONGODB_URI ? 'URI is set' : 'URI is not set');
-console.log('COHERE_API_KEY:', COHERE_API_KEY ? 'API Key is set' : 'API Key is not set');
-console.log('FRONTEND_URL:', FRONTEND_URL);
-
-// Initialize OpenAI client for Cohere
-const openai = new OpenAI({
-  baseURL: "https://api.cohere.ai/v1",
-  apiKey: COHERE_API_KEY,
-});
-
-// Validate environment variables
-if (!COHERE_API_KEY) {
-  console.error('COHERE_API_KEY is not set in environment variables');
+if (!HF_API_KEY) {
+  console.error('HF_API_KEY is not set in environment variables');
   process.exit(1);
 }
 
@@ -74,20 +61,14 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Debug environment variables
-console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'URI is set' : 'URI is not set');
-console.log('COHERE_API_KEY:', COHERE_API_KEY ? 'API Key is set' : 'API Key is not set');
-
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-// Connect to MongoDB with options
+// Connect to MongoDB (modern driver options only)
 mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   serverSelectionTimeoutMS: 10000,
   socketTimeoutMS: 45000,
 })
@@ -127,50 +108,9 @@ app.use('/uploads', express.static('uploads'));
 // Serve public folder statically for PDF downloads
 app.use('/public', express.static('public'));
 
-// Mount routes
+// Mount routes (AI: /api/ai/* — see routes/ai.js)
 app.use('/api', apiRoutes);
 app.use('/api/ai', aiRoutes);
-
-// AI Chat endpoint using Cohere
-app.post('/api/ai/chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    
-    const completion = await openai.chat.completions.create({
-      model: "command-a-03-2025",
-      messages: [
-        {
-          role: "system",
-          content: `You are an AI Resume Assistant. Your role is to help users improve their resumes and provide career advice. 
-          You can:
-          - Help write and improve resume content
-          - Suggest better ways to describe experience
-          - Provide industry-specific resume tips
-          - Answer questions about resume best practices
-          - Give feedback on resume sections
-          - Suggest improvements for job descriptions
-          
-          Keep your responses professional, concise, and focused on resume and career development.`
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ],
-      stream: false
-    });
-
-    res.json({ 
-      response: completion.choices[0].message.content 
-    });
-  } catch (error) {
-    console.error('AI Chat error:', error.response?.data || error.message);
-    res.status(500).json({ 
-      error: 'Failed to process your request',
-      details: error.response?.data || error.message 
-    });
-  }
-});
 
 // Profile picture upload endpoint
 app.post('/api/profile/upload-avatar', upload.single('avatar'), async (req, res) => {
@@ -180,38 +120,6 @@ app.post('/api/profile/upload-avatar', upload.single('avatar'), async (req, res)
   // Here you would update the user's profile in the DB with the image URL
   // For now, just return the image URL
   res.json({ imageUrl: `/uploads/${req.file.filename}` });
-});
-
-// Add new Cohere text generation endpoint
-app.post('/api/ai/generate', async (req, res) => {
-  try {
-    const { prompt } = req.body;
-    
-    if (!prompt) {
-      return res.status(400).json({ error: 'Prompt is required' });
-    }
-
-    const completion = await openai.chat.completions.create({
-      model: "command-a-03-2025",
-      messages: [
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      stream: false
-    });
-
-    res.json({ 
-      generatedText: completion.choices[0].message.content 
-    });
-  } catch (error) {
-    console.error('Cohere API Error:', error.response?.data || error.message);
-    res.status(500).json({ 
-      error: 'Failed to generate text',
-      details: error.response?.data || error.message 
-    });
-  }
 });
 
 // Root route
@@ -274,8 +182,18 @@ const server = app.listen(PORT, () => {
   console.log(`Frontend URL: ${FRONTEND_URL}`);
 });
 
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Stop the other process or set PORT in .env to a free port.`);
+    console.error(`macOS/Linux: lsof -i :${PORT}   then: kill <PID>`);
+  } else {
+    console.error('Server error:', err);
+  }
+  process.exit(1);
+});
+
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Promise Rejection:', err);
   server.close(() => process.exit(1));
-}); 
+});

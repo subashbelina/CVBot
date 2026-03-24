@@ -1,33 +1,10 @@
-const OpenAI = require('openai');
+const { generateChat } = require('./hfInference');
 
 class AIService {
-  constructor() {
-    this.openai = new OpenAI({
-      baseURL: "https://api.cohere.ai/v1",
-      apiKey: process.env.COHERE_API_KEY,
-    });
-  }
-
   async generateResumeContent(section, userInput) {
     try {
       const prompt = this._getPromptForSection(section, userInput);
-      
-      const completion = await this.openai.chat.completions.create({
-        model: "command-a-03-2025",
-        messages: [
-          {
-            role: "system",
-            content: this._getSystemPrompt()
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        stream: false
-      });
-
-      return completion.choices[0].message.content;
+      return await generateChat(this._getSystemPrompt(), prompt, { max_new_tokens: 1024 });
     } catch (error) {
       console.error('AI Service Error:', error);
       throw new Error('Failed to generate content');
@@ -36,24 +13,10 @@ class AIService {
 
   async improveContent(content, section) {
     try {
-      const prompt = `Please improve the following ${section} content to make it more professional and impactful:\n\n${content}`;
-      
-      const completion = await this.openai.chat.completions.create({
-        model: "command-a-03-2025",
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert resume writer. Improve the given content to be more professional, impactful, and ATS-friendly. Focus on using strong action verbs and quantifiable achievements."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        stream: false
-      });
-
-      return completion.choices[0].message.content;
+      const userMessage = `Please improve the following ${section} content to make it more professional and impactful:\n\n${content}`;
+      const system =
+        'You are an expert resume writer. Improve the given content to be more professional, impactful, and ATS-friendly. Focus on using strong action verbs and quantifiable achievements.';
+      return await generateChat(system, userMessage, { max_new_tokens: 1024 });
     } catch (error) {
       console.error('AI Service Error:', error);
       throw new Error('Failed to improve content');
@@ -62,22 +25,9 @@ class AIService {
 
   async getCareerAdvice(question) {
     try {
-      const completion = await this.openai.chat.completions.create({
-        model: "command-a-03-2025",
-        messages: [
-          {
-            role: "system",
-            content: "You are a career development expert. Provide professional, actionable advice about career development, job searching, and professional growth."
-          },
-          {
-            role: "user",
-            content: question
-          }
-        ],
-        stream: false
-      });
-
-      return completion.choices[0].message.content;
+      const system =
+        'You are a career development expert. Provide professional, actionable advice about career development, job searching, and professional growth.';
+      return await generateChat(system, question, { max_new_tokens: 1024 });
     } catch (error) {
       console.error('AI Service Error:', error);
       throw new Error('Failed to get career advice');
@@ -110,4 +60,4 @@ class AIService {
   }
 }
 
-module.exports = new AIService(); 
+module.exports = new AIService();

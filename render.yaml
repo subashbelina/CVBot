@@ -11,7 +11,7 @@ services:
         value: production
       - key: MONGODB_URI
         sync: false
-      - key: COHERE_API_KEY
+      - key: HF_API_KEY
         sync: false
       - key: JWT_SECRET
         sync: false

@@ -34,12 +34,11 @@ cd backend
 npm install
 ```
 
-3. Create a `.env` file with the following variables:
+3. Copy `.env.example` to `.env` and set your values:
 ```
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/ai-resume-generator
-JWT_SECRET=your_jwt_secret_here
+cp .env.example .env
 ```
+Required variables: `PORT`, `MONGODB_URI`, `HF_API_KEY`, `FRONTEND_URL`. See `.env.example` for details.
 
 4. Start the development server:
 ```bash
@@ -60,10 +59,7 @@ cd frontend
 npm install
 ```
 
-3. Create a `.env` file with the following variables:
-```
-VITE_API_URL=http://localhost:5000
-```
+3. Copy `.env.example` to `.env` and set `VITE_API_URL` (e.g. `http://localhost:5000`). See `.env.example` for optional variables.
 
 4. Start the development server:
 ```bash

@@ -1,9 +1,19 @@
-const axios = require('axios');
+const { generateText } = require('./hfInference');
 
 // Generate content for a section
 exports.generateContent = async (section, content, chatHistory = []) => {
   try {
     const sectionPrompts = {
+      general: `You are an AI resume and career assistant. Help with resumes, job applications, cover letters, interviews, and career advice.
+
+User message:
+${content}
+
+Previous conversation:
+${chatHistory.length ? chatHistory.map((msg) => `${msg.role}: ${msg.content}`).join('\n') : '(start of conversation)'}
+
+Give a clear, professional, helpful reply. Keep answers concise unless the user asks for detail.`,
+
       experience: `Generate professional experience bullet points for a resume based on the following input:
       ${content}
       
@@ -66,22 +76,8 @@ exports.generateContent = async (section, content, chatHistory = []) => {
     
     The content should be professional, concise, and highlight achievements.`;
 
-    const response = await axios.post(
-      'https://api.cohere.ai/v1/chat',
-      {
-        model: 'command-r-plus',
-        message: prompt,
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.COHERE_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-
-    return response.data.text.trim();
+    const text = await generateText(prompt);
+    return text.trim();
   } catch (error) {
     throw new Error(`Error generating content: ${error.message}`);
   }
@@ -153,22 +149,8 @@ exports.improveContent = async (section, content, chatHistory = []) => {
     
     Make it more impactful, professional, and achievement-focused. Use action verbs and quantify results where possible.`;
 
-    const response = await axios.post(
-      'https://api.cohere.ai/v1/chat',
-      {
-        model: 'command-r-plus',
-        message: prompt,
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.COHERE_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-
-    return response.data.text.trim();
+    const text = await generateText(prompt);
+    return text.trim();
   } catch (error) {
     throw new Error(`Error improving content: ${error.message}`);
   }
@@ -224,23 +206,8 @@ exports.generateSuggestions = async (section, content) => {
     
     Generate 3-5 specific suggestions for improvement or alternative ways to phrase the content.`;
 
-    const response = await axios.post(
-      'https://api.cohere.ai/v1/chat',
-      {
-        model: 'command-r-plus',
-        message: prompt,
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.COHERE_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-
-    // Parse the response into an array of suggestions
-    const suggestions = response.data.text
+    const text = await generateText(prompt);
+    const suggestions = text
       .split('\n')
       .filter(line => line.trim().length > 0)
       .map(line => line.replace(/^\d+\.\s*/, '').trim());
@@ -267,22 +234,8 @@ exports.generateSummary = async (experience, skills) => {
     - Use professional and engaging language
     - Ensure ATS optimization`;
 
-    const response = await axios.post(
-      'https://api.cohere.ai/v1/chat',
-      {
-        model: 'command-r-plus',
-        message: prompt,
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.COHERE_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-
-    return response.data.text.trim();
+    const text = await generateText(prompt);
+    return text.trim();
   } catch (error) {
     throw new Error(`Error generating summary: ${error.message}`);
   }
@@ -303,22 +256,8 @@ exports.enhanceJobDescription = async (jobDescription) => {
     - Ensure ATS optimization
     - Keep descriptions concise and clear`;
 
-    const response = await axios.post(
-      'https://api.cohere.ai/v1/chat',
-      {
-        model: 'command-r-plus',
-        message: prompt,
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.COHERE_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-
-    return response.data.text.trim();
+    const text = await generateText(prompt);
+    return text.trim();
   } catch (error) {
     throw new Error(`Error enhancing job description: ${error.message}`);
   }
@@ -338,23 +277,9 @@ exports.suggestSkills = async (jobTitle, industry) => {
     - Use industry-standard terminology
     - Format as a categorized list`;
 
-    const response = await axios.post(
-      'https://api.cohere.ai/v1/chat',
-      {
-        model: 'command-r-plus',
-        message: prompt,
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.COHERE_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-
-    return response.data.text.trim();
+    const text = await generateText(prompt);
+    return text.trim();
   } catch (error) {
     throw new Error(`Error suggesting skills: ${error.message}`);
   }
-}; 
+};

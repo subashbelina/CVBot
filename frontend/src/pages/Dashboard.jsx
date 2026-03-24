@@ -156,16 +156,18 @@ function Dashboard() {
 
       {/* User's Resumes List */}
       <motion.div variants={itemVariants}>
-        <Card className="dashboard-glass-card shadow-2xl">
+        <Card className="dashboard-glass-card shadow-2xl text-white">
           <CardHeader>
-            <CardTitle>Your Resumes</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-white">Your Resumes</CardTitle>
+            <CardDescription className="text-gray-100/80">
               View and manage your resumes
             </CardDescription>
           </CardHeader>
           <CardContent>
             {resumes.length === 0 ? (
-              <div className="text-gray-500">No resumes found. Create your first resume!</div>
+              <div className="text-gray-100/70">
+                No resumes found. Create your first resume!
+              </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {resumes.map((resume) => (
@@ -205,10 +207,10 @@ function Dashboard() {
 
       {/* Analytics Chart with Glassmorphism */}
       <motion.div variants={itemVariants}>
-        <Card className="dashboard-glass-card shadow-2xl">
+        <Card className="dashboard-glass-card shadow-2xl text-white">
           <CardHeader>
-            <CardTitle>Analytics Overview</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-white">Analytics Overview</CardTitle>
+            <CardDescription className="text-gray-100/80">
               Track your resume performance over time
             </CardDescription>
           </CardHeader>
@@ -245,10 +247,10 @@ function Dashboard() {
 
       {/* Recent Resumes with Enhanced Cards */}
       <motion.div variants={itemVariants}>
-        <Card className="dashboard-section bg-white/95 dark:bg-gray-900/80 shadow-md border border-white/10">
+        <Card className="dashboard-glass-card shadow-2xl text-white">
           <CardHeader>
-            <CardTitle>Recent Resumes</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-white">Recent Resumes</CardTitle>
+            <CardDescription className="text-gray-100/80">
               View and manage your recent resumes
             </CardDescription>
           </CardHeader>
@@ -319,131 +321,124 @@ function Dashboard() {
         variants={itemVariants}
         className="grid gap-3 md:gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
       >
-        <Card className="group hover:shadow-lg transition-all duration-300 bg-white/95 dark:bg-gray-900/80 border border-white/10">
+        <Card className="group dashboard-glass-card hover:shadow-lg transition-all duration-300 text-white">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <div className="rounded-full bg-primary-100 p-2 mr-3 group-hover:bg-primary-200 transition-colors">
-                <Plus className="h-5 w-5 text-primary-600" />
+            <CardTitle className="flex items-center text-white">
+              <div className="rounded-full bg-white/15 p-2 mr-3 group-hover:bg-white/25 transition-colors">
+                <Plus className="h-5 w-5 text-cyan-300" />
               </div>
-              Create New Resume
+              Create a new resume
             </CardTitle>
-            <CardDescription>
-              Start from scratch or use a template
+            <CardDescription className="text-gray-100/80">
+              Start from scratch or quickly launch from a template
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full bg-primary-600 hover:bg-primary-700">
+            <Button asChild className="w-full dashboard-glass-btn">
               <Link to="/create">Get Started</Link>
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="group hover:shadow-lg transition-all duration-300 bg-white/95 dark:bg-gray-900/80 border border-white/10">
+        <Card className="group dashboard-glass-card hover:shadow-lg transition-all duration-300 text-white">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <div className="rounded-full bg-green-100 p-2 mr-3 group-hover:bg-green-200 transition-colors">
-                <Upload className="h-5 w-5 text-green-600" />
+            <CardTitle className="flex items-center text-white">
+              <div className="rounded-full bg-white/15 p-2 mr-3 group-hover:bg-white/25 transition-colors">
+                <Upload className="h-5 w-5 text-emerald-300" />
               </div>
-              Import Resume
+              Import an existing resume
             </CardTitle>
-            <CardDescription>
-              Upload your existing resume
+            <CardDescription className="text-gray-100/80">
+              Upload a PDF or DOCX and let the AI convert it into an editable resume
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full border-2 hover:bg-green-50 hover:border-green-200">
-              Import
+            <Button className="w-full dashboard-glass-btn">
+              Import resume
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="group hover:shadow-lg transition-all duration-300 bg-white/95 dark:bg-gray-900/80 border border-white/10">
+        <Card className="group dashboard-glass-card hover:shadow-lg transition-all duration-300 text-white">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <div className="rounded-full bg-blue-100 p-2 mr-3 group-hover:bg-blue-200 transition-colors">
-                <Download className="h-5 w-5 text-blue-600" />
+            <CardTitle className="flex items-center text-white">
+              <div className="rounded-full bg-white/15 p-2 mr-3 group-hover:bg-white/25 transition-colors">
+                <Download className="h-5 w-5 text-sky-300" />
               </div>
-              Download All
+              Download all resumes
             </CardTitle>
-            <CardDescription>
-              Get all your resumes in one click
+            <CardDescription className="text-gray-100/80">
+              Export every version of your resume in a single download
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="w-full border-2 hover:bg-blue-50 hover:border-blue-200">
-              Download
+            <Button className="w-full dashboard-glass-btn">
+              Download all
             </Button>
           </CardContent>
         </Card>
       </motion.div>
 
-      {/* Popular Templates with Enhanced Cards */}
+      {/* Popular Templates */}
       <motion.div variants={itemVariants}>
-        <Card className="dashboard-section bg-white/95 dark:bg-gray-900/80 shadow-md border border-white/10">
+        <Card className="dashboard-glass-card shadow-2xl text-white">
           <CardHeader>
-            <CardTitle>Popular Templates</CardTitle>
-            <CardDescription>
-              Choose from our most popular resume templates
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((template) => (
-                <motion.div
-                  key={template}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Card className="group hover:shadow-lg transition-all duration-300">
-                    <CardContent className="p-4">
-                      <div className="aspect-video rounded-lg bg-gradient-to-br from-primary-50 to-primary-100 mb-4 group-hover:from-primary-100 group-hover:to-primary-200 transition-colors" />
-                      <h4 className="text-sm font-medium">Professional Template</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Perfect for corporate roles
-                      </p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center">
-                          <BarChart3 className="mr-1 h-4 w-4 text-yellow-400" />
-                          <span className="text-sm text-muted-foreground">4.8 (120)</span>
-                        </div>
-                        <Button variant="link" className="text-primary-600 hover:text-primary-700">
-                          Use Template
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Popular Templates with Enhanced Cards */}
-      <motion.div variants={itemVariants}>
-        <Card className="dashboard-glass-card shadow-2xl">
-          <CardHeader>
-            <CardTitle>Popular Templates</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-white">Popular Templates</CardTitle>
+            <CardDescription className="text-gray-100/80">
               Click a template to start your resume with that style
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-8 flex-wrap">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <button
                 onClick={() => navigate('/create?template=modern')}
-                className="flex flex-col items-center cursor-pointer group"
+                className="group text-left rounded-xl border border-cyan-200/40 bg-white/10 p-4 hover:bg-white/15 hover:border-cyan-300/70 transition-all"
               >
-                <div className="w-32 h-20 rounded-lg border-2 border-primary-600 bg-gradient-to-br from-primary-200 to-primary-400 group-hover:scale-105 transition-transform" />
-                <span className="mt-2 text-primary-700 font-semibold">Modern</span>
+                <div className="aspect-[16/10] rounded-lg border border-cyan-300/60 bg-gradient-to-br from-cyan-100 via-blue-200 to-indigo-300 mb-3" />
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold text-cyan-100">Modern</span>
+                  <span className="text-xs px-2 py-1 rounded-full bg-cyan-500/20 text-cyan-100 border border-cyan-300/40">
+                    ATS Friendly
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-gray-100/85">
+                  Clean layout with strong hierarchy for tech and product roles.
+                </p>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-xs text-gray-200/80">Most used this week</span>
+                  <span className="text-sm text-cyan-200 group-hover:text-cyan-100">Use template →</span>
+                </div>
               </button>
+
               <button
                 onClick={() => navigate('/create?template=classic')}
-                className="flex flex-col items-center cursor-pointer group"
+                className="group text-left rounded-xl border border-slate-200/40 bg-white/10 p-4 hover:bg-white/15 hover:border-slate-300/70 transition-all"
               >
-                <div className="w-32 h-20 rounded-lg border-2 border-gray-400 bg-gradient-to-br from-gray-200 to-gray-400 group-hover:scale-105 transition-transform" />
-                <span className="mt-2 text-gray-700 font-semibold">Classic</span>
+                <div className="aspect-[16/10] rounded-lg border border-slate-300/60 bg-gradient-to-br from-gray-100 via-slate-200 to-zinc-300 mb-3" />
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold text-slate-100">Classic</span>
+                  <span className="text-xs px-2 py-1 rounded-full bg-slate-500/20 text-slate-100 border border-slate-300/40">
+                    Traditional
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-gray-100/85">
+                  Professional and timeless style for business and admin roles.
+                </p>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-xs text-gray-200/80">Great for conservative industries</span>
+                  <span className="text-sm text-slate-200 group-hover:text-slate-100">Use template →</span>
+                </div>
               </button>
+            </div>
+
+            <div className="mt-5">
+              <Button
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 hover:text-white"
+                onClick={() => navigate('/templates')}
+              >
+                Browse all templates
+              </Button>
             </div>
           </CardContent>
         </Card>

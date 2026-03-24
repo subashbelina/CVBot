@@ -45,7 +45,7 @@ This guide will help you deploy the AI Resume Generator application to Vercel (F
 ### Prerequisites
 - Render account
 - MongoDB Atlas database
-- OpenAI API key
+- Hugging Face API token (`HF_API_KEY`)
 
 ### Steps
 
@@ -71,7 +71,7 @@ This guide will help you deploy the AI Resume Generator application to Vercel (F
    ```
    NODE_ENV=production
    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/resume-generator?retryWrites=true&w=majority
-   COHERE_API_KEY=your_openai_api_key_here
+   HF_API_KEY=your_huggingface_token_here
    FRONTEND_URL=https://your-frontend-app-name.vercel.app
    PORT=10000
    ```
@@ -132,7 +132,7 @@ VITE_APP_VERSION=1.0.0
 ```env
 NODE_ENV=production
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/resume-generator
-COHERE_API_KEY=your_openai_api_key_here
+HF_API_KEY=your_huggingface_token_here
 FRONTEND_URL=https://your-frontend-app-name.vercel.app
 PORT=10000
 ```

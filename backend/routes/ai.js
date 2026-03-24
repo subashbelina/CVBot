@@ -15,23 +15,24 @@ const router = express.Router();
 // @access  Public
 router.post('/chat', async (req, res) => {
   try {
-    const { message } = req.body;
-    
-    if (!message) {
+    const { message, chatHistory } = req.body;
+
+    if (!message || !String(message).trim()) {
       return res.status(400).json({
         success: false,
         error: 'Message is required'
       });
     }
 
-    // Use the generateContent function with a general prompt
-    const prompt = `You are an AI resume assistant. Help the user with their question about resumes, job applications, or career advice. User question: ${message}`;
-    
-    const response = await generateContent('general', prompt, []);
-    
+    const history = Array.isArray(chatHistory)
+      ? chatHistory.filter((m) => m && (m.role === 'user' || m.role === 'assistant') && m.content)
+      : [];
+
+    const response = await generateContent('general', String(message).trim(), history);
+
     res.status(200).json({
       success: true,
-      response: response
+      response
     });
   } catch (error) {
     console.error('Chat error:', error);
