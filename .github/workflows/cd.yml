@@ -7,32 +7,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-secrets:
+    name: Check deploy hook secrets
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      has_render_hook: ${{ steps.check.outputs.has_render_hook }}
+      has_frontend_hook: ${{ steps.check.outputs.has_frontend_hook }}
+    steps:
+      - name: Evaluate secret presence
+        id: check
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          FRONTEND_DEPLOY_HOOK_URL: ${{ secrets.FRONTEND_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "has_render_hook=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_render_hook=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ -n "$FRONTEND_DEPLOY_HOOK_URL" ]; then
+            echo "has_frontend_hook=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_frontend_hook=false" >> "$GITHUB_OUTPUT"
+          fi
+
   deploy-backend-render:
     name: Deploy backend to Render
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    needs: check-secrets
+    if: needs.check-secrets.outputs.has_render_hook == 'true'
     steps:
-      - name: Check Render deploy hook secret
-        run: |
-          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" ]; then
-            echo "Missing RENDER_DEPLOY_HOOK_URL secret."
-            exit 1
-          fi
-
       - name: Trigger Render deploy hook
         run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
   deploy-frontend:
     name: Deploy frontend via hook
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    needs: check-secrets
+    if: needs.check-secrets.outputs.has_frontend_hook == 'true'
     steps:
-      - name: Check frontend deploy hook secret
-        run: |
-          if [ -z "${{ secrets.FRONTEND_DEPLOY_HOOK_URL }}" ]; then
-            echo "Missing FRONTEND_DEPLOY_HOOK_URL secret."
-            exit 1
-          fi
-
       - name: Trigger frontend deploy hook
         run: curl -fsSL -X POST "${{ secrets.FRONTEND_DEPLOY_HOOK_URL }}"
