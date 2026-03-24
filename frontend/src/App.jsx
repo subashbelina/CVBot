@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './contexts/AuthContext';
@@ -19,6 +19,68 @@ const AIAssistant = lazy(() => import('./pages/AIAssistant'));
 const Resumes = lazy(() => import('./pages/Resumes'));
 const Templates = lazy(() => import('./pages/Templates'));
 
+const DEFAULT_SEO = {
+  title: 'CVBot - AI Resume Builder',
+  description:
+    'Build ATS-friendly resumes with AI suggestions, modern templates, and quick export tools using CVBot.',
+  path: '/dashboard',
+};
+
+const SEO_ROUTES = [
+  {
+    pattern: /^\/$/,
+    title: 'CVBot - AI Resume Builder',
+    description:
+      'Create professional, ATS-friendly resumes with AI-powered writing suggestions and polished templates.',
+    path: '/',
+  },
+  {
+    pattern: /^\/dashboard$/,
+    title: 'Dashboard - CVBot',
+    description: 'Track resume activity, manage drafts, and continue editing from your CVBot dashboard.',
+    path: '/dashboard',
+  },
+  {
+    pattern: /^\/templates$/,
+    title: 'Resume Templates - CVBot',
+    description:
+      'Browse professional resume templates including modern, classic, minimalist, and executive styles.',
+    path: '/templates',
+  },
+  {
+    pattern: /^\/create$/,
+    title: 'Create Resume - CVBot',
+    description:
+      'Start building your resume with guided sections, AI suggestions, and a clean live preview experience.',
+    path: '/create',
+  },
+  {
+    pattern: /^\/resumes$/,
+    title: 'My Resumes - CVBot',
+    description: 'View, organize, and manage all your resumes in one place with CVBot.',
+    path: '/resumes',
+  },
+  {
+    pattern: /^\/ai-assistant$/,
+    title: 'AI Resume Assistant - CVBot',
+    description:
+      'Improve your resume writing with CVBot AI prompts for summaries, achievements, and role-focused content.',
+    path: '/ai-assistant',
+  },
+  {
+    pattern: /^\/profile$/,
+    title: 'Profile - CVBot',
+    description: 'Manage your personal profile and account details in CVBot.',
+    path: '/profile',
+  },
+  {
+    pattern: /^\/settings$/,
+    title: 'Settings - CVBot',
+    description: 'Update your CVBot preferences and app settings.',
+    path: '/settings',
+  },
+];
+
 function App() {
   return (
     <Router>
@@ -34,9 +96,68 @@ function App() {
   );
 }
 
+function SeoManager() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const matched = SEO_ROUTES.find((route) => route.pattern.test(location.pathname)) || DEFAULT_SEO;
+    const siteUrl = (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/+$/, '');
+    const canonicalPath = matched.path || location.pathname;
+    const canonicalUrl = `${siteUrl}${canonicalPath}`;
+
+    document.title = matched.title;
+    updateMeta('description', matched.description);
+    updateMeta('robots', 'index, follow, max-image-preview:large');
+    updateMeta('author', 'CVBot');
+
+    updateMeta('property=og:type', 'website');
+    updateMeta('property=og:site_name', 'CVBot');
+    updateMeta('property=og:title', matched.title);
+    updateMeta('property=og:description', matched.description);
+    updateMeta('property=og:url', canonicalUrl);
+
+    updateMeta('name=twitter:card', 'summary_large_image');
+    updateMeta('name=twitter:title', matched.title);
+    updateMeta('name=twitter:description', matched.description);
+
+    updateLink('canonical', canonicalUrl);
+  }, [location.pathname]);
+
+  return null;
+}
+
+function updateMeta(selector, content) {
+  const [attr, value] = selector.split('=');
+  const query = value ? `meta[${attr}="${value}"]` : `meta[name="${selector}"]`;
+  let tag = document.head.querySelector(query);
+
+  if (!tag) {
+    tag = document.createElement('meta');
+    if (value) {
+      tag.setAttribute(attr, value);
+    } else {
+      tag.setAttribute('name', selector);
+    }
+    document.head.appendChild(tag);
+  }
+
+  tag.setAttribute('content', content);
+}
+
+function updateLink(rel, href) {
+  let tag = document.head.querySelector(`link[rel="${rel}"]`);
+  if (!tag) {
+    tag = document.createElement('link');
+    tag.setAttribute('rel', rel);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute('href', href);
+}
+
 function AppRoutes() {
   return (
     <Suspense fallback={<div className="min-h-screen grid place-items-center text-gray-500">Loading...</div>}>
+      <SeoManager />
       <Routes>
         {/* All routes are now public */}
         <Route path="/" element={<Home />} />
