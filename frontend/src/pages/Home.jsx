@@ -55,6 +55,31 @@ function Home() {
           <p className="mt-2 text-sm text-slate-300">Monitor updates and manage resumes from one dashboard.</p>
         </article>
       </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Frequently Asked Questions</h2>
+        <div className="mt-6 grid gap-4">
+          <article className="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <h3 className="text-base font-semibold">Is CVBot free to use?</h3>
+            <p className="mt-2 text-sm text-slate-300">
+              You can start creating resumes for free and explore templates, editing, and AI-assisted writing.
+            </p>
+          </article>
+          <article className="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <h3 className="text-base font-semibold">Are CVBot resumes ATS-friendly?</h3>
+            <p className="mt-2 text-sm text-slate-300">
+              Yes. CVBot templates are designed to stay readable for Applicant Tracking Systems while looking
+              professional to recruiters.
+            </p>
+          </article>
+          <article className="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <h3 className="text-base font-semibold">Can I edit and update my resume later?</h3>
+            <p className="mt-2 text-sm text-slate-300">
+              Yes. You can return to your dashboard any time to edit, duplicate, and manage your resumes.
+            </p>
+          </article>
+        </div>
+      </section>
     </main>
   );
 }
