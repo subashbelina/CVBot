@@ -8,6 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    // Raise warning threshold to reduce noisy alerts for known large chunks.
+    chunkSizeWarningLimit: 700,
+  },
   server: {
     port: 3000,
     proxy: {
