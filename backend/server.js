@@ -16,6 +16,10 @@ const PORT = process.env.PORT || 5000;
 const HF_API_KEY = process.env.HF_API_KEY;
 const MONGODB_URI = process.env.MONGODB_URI;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const frontendOriginsFromEnv = FRONTEND_URL
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
 
 if (!HF_API_KEY) {
   console.error('HF_API_KEY is not set in environment variables');
@@ -37,7 +41,8 @@ const allowedOrigins = [
   'http://127.0.0.1:5000',
   'https://ai-resume-generator-frontend-mp4o.vercel.app',
   'https://ai-resume-generator-frontend-mp4o-cqc9wml75.vercel.app',
-  'https://ai-resume-generator-subash.vercel.app'
+  'https://ai-resume-generator-subash.vercel.app',
+  ...frontendOriginsFromEnv
 ];
 
 app.use(cors({
